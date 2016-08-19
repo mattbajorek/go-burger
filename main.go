@@ -1,37 +1,46 @@
 package main
 
 import (
-	"html/template"
-	"log"
-	"os"
-	"strings"
+	"database/sql"
+	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-type Page struct {
-	Title string
-	Body  template.HTML
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
 
 func main() {
-	log.SetFlags(0)
-
-	var err error
-
-	tpl := template.New("tpl.gohtml")
-	tpl = tpl.Funcs(template.FuncMap{
-		"uppercase": func(str string) string {
-			return strings.ToUpper(str)
-		},
-	})
-	tpl, err = tpl.ParseFiles("tpl.gohtml")
+	db, err := sql.Open("mysql", "root:@/burger_db")
 	if err != nil {
-		log.Fatalln(err)
+		panic(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
 	}
-	err = tpl.ExecuteTemplate(os.Stdout, "tpl.gohtml", Page{
-		Title: "My Title 2",
-		Body:  "Hello World <script>alert('hi');</script>",
-	})
-	if err != nil {
-		log.Fatalln(err)
+	defer db.Close()
+
+	// Query to select all
+	rows, err := db.Query("SELECT * FROM burgers")
+	checkErr(err)
+
+	// Create row struct
+	type row struct {
+		id          int
+		burger_name string
+		devoured    bool
+		date        string
 	}
+
+	// Create slice of rows
+	burgers := []row{}
+
+	for rows.Next() {
+		var r row
+		err = rows.Scan(&r.id, &r.burger_name, &r.devoured, &r.date)
+		checkErr(err)
+		burgers = append(burgers, r)
+	}
+
+	fmt.Println(burgers)
 }
