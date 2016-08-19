@@ -8,10 +8,16 @@ import (
 
 // Create row struct
 type row struct {
-	id          int
-	burger_name string
-	devoured    bool
-	date        string
+	Id         int
+	BurgerName string
+	Devoured   bool
+	Date       string
+}
+
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
 
 func selectAll(db *sql.DB) []row {
@@ -24,7 +30,7 @@ func selectAll(db *sql.DB) []row {
 
 	for rows.Next() {
 		var r row
-		err = rows.Scan(&r.id, &r.burger_name, &r.devoured, &r.date)
+		err = rows.Scan(&r.Id, &r.BurgerName, &r.Devoured, &r.Date)
 		checkErr(err)
 		burgers = append(burgers, r)
 	}

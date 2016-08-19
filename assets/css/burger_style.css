@@ -1,0 +1,65 @@
+html, body, .container {
+	height: 100%;
+}
+
+body {
+	background-color: #18afe6;
+	color: #fff;
+}
+
+img {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	height: auto;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+h2 {
+	font-size: 24px;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+button {
+	margin-top: 15px;
+	margin-right: 15px;
+}
+
+#update {
+	float: left;
+}
+
+#add {
+	display: block;
+	text-align: center;
+	height: 10%;
+}
+
+#add>textarea {
+	width: 60%;
+	height: 100%;
+	color: #e64f18;
+	padding: 19px;
+}
+
+#add>button {
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 50px;
+}
+
+.well {
+	float: left;
+	width: 75%;
+	color: #e64f18;
+}
+
+.devoured {
+	width: 100%;
+}

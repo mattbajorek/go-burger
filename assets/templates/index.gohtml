@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="assets/css/burger_style.css" type="text/css" />
+		<title>Eat-Da-Burger!</title>
+  </head>
+  <body>
+    <div class="container">
+
+      <img src="assets/img/burger.png">
+      <h1>Eat-Da-Burger!</h1>
+
+      <div class="row">
+
+        <div class="col-sm-6">
+          <h2>Burgers to Eat!</h2>
+          {{ range . }}
+            {{ if .Devoured }}
+            {{ else }}
+              <form id="update" action="/burgers/devour/{{ .Id }}?_method=PUT" method="POST">
+                <input type="hidden" name="devoured" value="true">
+                <button class="btn btn-danger" type="submit">Devour it!</button>
+              </form>
+              <div class="well">
+                {{ .Id }}. {{ .BurgerName }}
+              </div>
+            {{ end }}
+          {{ end }}
+        </div>
+
+        <div class="col-sm-6">
+          <h2>Burgers Devoured!</h2>
+          {{ range . }}
+            {{ if .Devoured }}
+              <div class="well devoured">
+                {{ .Id }}. {{ .BurgerName }}
+              </div>
+            {{ end }}
+          {{ end }}
+        </div>
+
+      </div>
+
+      <h2>Enter a burger you want to eat then click "Submit"</h2>
+
+      <form id="add" action="/burgers/add" method="POST">
+        <textarea name="burger_name"></textarea>
+        <button class="btn btn-warning" type="submit">Submit</button>
+      </form>
+
+    </div>
+    <!-- jQuery -->
+		<script   src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<!-- Bootstrap JS -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
