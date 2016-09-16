@@ -1,7 +1,7 @@
 package main
 
 import (
-	"database/sql"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -16,14 +16,20 @@ type row struct {
 
 func checkErr(err error) {
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
-func selectAll(db *sql.DB) []row {
+func selectAll() []row {
+
+	// Gets a pointer to database connection
+	db := dbConnect()
+	defer db.Close()
+
 	// Query to select all
 	rows, err := db.Query("SELECT * FROM burgers")
 	checkErr(err)
+	defer rows.Close()
 
 	// Create slice of rows
 	burgers := []row{}
@@ -36,4 +42,20 @@ func selectAll(db *sql.DB) []row {
 	}
 
 	return burgers
+}
+
+func insertOne(burger_name string) {
+
+	// Gets a pointer to database connection
+	db := dbConnect()
+	defer db.Close()
+
+	// Prepare insert statement
+	stmt, err := db.Prepare("INSERT burgers SET burger_name=?")
+	checkErr(err)
+
+	// Execute statement
+	_, err = stmt.Exec(burger_name)
+	checkErr(err)
+
 }

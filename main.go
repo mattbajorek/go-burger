@@ -20,10 +20,6 @@ func handle(path string, handleFunc func(res http.ResponseWriter, req *http.Requ
 
 func main() {
 
-	// Gets a pointer to database connection
-	db := dbConnect()
-	defer db.Close()
-
 	// Static files
 	http.Handle("/assets/",
 		http.StripPrefix("/assets",
@@ -33,7 +29,7 @@ func main() {
 	handle("/", func(res http.ResponseWriter, req *http.Request) error {
 
 		// Selects all burgers from db
-		burgers := selectAll(db)
+		burgers := selectAll()
 
 		// Prints out burgers
 		fmt.Println(burgers)
@@ -47,6 +43,21 @@ func main() {
 		if err != nil {
 			return err
 		}
+
+		return nil
+	})
+
+	// Post
+	handle("/burgers/add", func(res http.ResponseWriter, req *http.Request) error {
+
+		// Parse url parameter for burger name
+		burger_name := req.FormValue("burger_name")
+
+		// Insert burger name into db
+		insertOne(burger_name)
+
+		// Redirect to main page
+		http.Redirect(res, req, "/", 301)
 
 		return nil
 	})
