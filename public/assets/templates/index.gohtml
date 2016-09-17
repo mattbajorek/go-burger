@@ -20,7 +20,7 @@
           {{ range . }}
             {{ if .Devoured }}
             {{ else }}
-              <form id="update" action="/burgers/devour/{{ .Id }}?_method=PUT" method="POST">
+              <form id="update" action="/burgers/devour/{{ .Id }}" method="POST">
                 <input type="hidden" name="devoured" value="true">
                 <button class="btn btn-danger" type="submit">Devour it!</button>
               </form>
@@ -53,7 +53,7 @@
 
     </div>
     <!-- jQuery -->
-		<script   src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 		<!-- Bootstrap JS -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </body>

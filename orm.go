@@ -59,3 +59,27 @@ func insertOne(burger_name string) {
 	checkErr(err)
 
 }
+
+func updateOne(devoured string, id string) {
+
+	// Gets a pointer to database connection
+	db := dbConnect()
+	defer db.Close()
+
+	// Logic for translating true and false to 1 and 0
+	var value string
+	if devoured == "true" {
+		value = "1"
+	} else {
+		value = "0"
+	}
+
+	// Prepare update statement
+	stmt, err := db.Prepare("UPDATE burgers SET devoured=? WHERE id=?")
+	checkErr(err)
+
+	// Execute statement
+	_, err = stmt.Exec(value, id)
+	checkErr(err)
+
+}
