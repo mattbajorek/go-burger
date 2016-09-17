@@ -4,6 +4,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -19,6 +20,11 @@ func main() {
 	// Serve static files from the ./public directory
 	router.NotFound = http.FileServer(http.Dir("public"))
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	// Get port
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+	log.Fatal(http.ListenAndServe(":"+port, router))
 
 }
